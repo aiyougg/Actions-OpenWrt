@@ -12,9 +12,16 @@
 
 # Modify default IP
 #sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
-
+git clone https://github.com/jerrykuku/luci-theme-argon package/luci-theme-argon
 # Modify default theme
 #sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/Makefile
-
+#oaf
+git clone https://github.com/destan19/OpenAppFilter.git package/OpenAppFilter
 # Modify hostname
 #sed -i 's/OpenWrt/P3TERX-Router/g' package/base-files/files/bin/config_generate
+#dnsproxy
+git clone --depth 1 --branch master --single-branch --no-checkout https://github.com/muink/luci-app-dnsproxy.git package/luci-app-dnsproxy
+pushd package/luci-app-dnsproxy
+umask 022
+git checkout
+popd
