@@ -91,12 +91,16 @@ jobs:
           cd openwrt
           "$GITHUB_WORKSPACE/$DIY_P2_SH"
 
-      - name: Force kernel 6.18
+      - name: Enable testing kernel
         run: |
           cd openwrt
-          sed -i 's/KERNEL_PATCHVER:=6.12/KERNEL_PATCHVER:=6.18/' target/linux/x86/Makefile
-          grep KERNEL_PATCHVER target/linux/x86/Makefile
-          cat target/linux/generic/kernel-6.18
+          sed -i '/^CONFIG_LINUX_6_18=/d' .config
+          sed -i '/^CONFIG_LINUX_6_12=/d' .config
+          sed -i '/^CONFIG_TESTING_KERNEL=/d' .config
+          sed -i '/^# CONFIG_TESTING_KERNEL is not set$/d' .config
+          echo 'CONFIG_TESTING_KERNEL=y' >> .config
+          make defconfig
+          grep -E 'CONFIG_TESTING_KERNEL|CONFIG_LINUX_6_' .config
 
       - name: Download package
         run: |
