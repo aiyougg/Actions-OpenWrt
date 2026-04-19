@@ -91,14 +91,6 @@ jobs:
           cd openwrt
           "$GITHUB_WORKSPACE/$DIY_P2_SH"
 
-      - name: Load custom config
-        run: |
-          cd openwrt
-          sed -i 's/^FEATURES:=/FEATURES:=testing-kernel /' target/linux/x86/Makefile
-          sed -i '/^CONFIG_TESTING_KERNEL=/d' .config
-          sed -i '/^# CONFIG_TESTING_KERNEL is not set$/d' .config
-          echo 'CONFIG_TESTING_KERNEL=y' >> .config
-
       - name: Download package
         run: |
           cd openwrt
