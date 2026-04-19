@@ -25,3 +25,9 @@ pushd package/luci-app-dnsproxy
 umask 022
 git checkout
 popd
+
+#bandix
+cd package
+git clone https://github.com/timsaya/luci-app-bandix.git
+git clone https://github.com/timsaya/openwrt-bandix.git
+cd ..
