@@ -17,6 +17,10 @@ env:
   TZ: Asia/Shanghai
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
+concurrency:
+  group: openwrt-builder
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-22.04
@@ -65,6 +69,14 @@ jobs:
           df -hT "$PWD"
           git clone "$REPO_URL" -b "$REPO_BRANCH" openwrt
           ln -sf /workdir/openwrt "$GITHUB_WORKSPACE/openwrt"
+
+      - name: Show source revision
+        run: |
+          cd openwrt
+          echo "===== git head ====="
+          git log -1 --oneline
+          echo "===== branch ====="
+          git branch --show-current || true
 
       - name: Load custom feeds
         run: |
@@ -142,9 +154,9 @@ jobs:
 
       - name: Generate release tag
         id: tag
-        if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+        if: env.UPLOAD_RELEASE == 'true' && steps.organize.outputs.status == 'success' && !cancelled()
         run: |
-          tag=$(date +"%Y.%m.%d-%H%M%S")
+          tag="$(date +"%Y.%m.%d-%H%M%S")-run${GITHUB_RUN_NUMBER}"
           echo "release_tag=$tag" >> "$GITHUB_OUTPUT"
           touch release.txt
           echo "OpenWrt build $(date)" >> release.txt
@@ -152,9 +164,9 @@ jobs:
           echo "Generated release tag: $tag"
 
       - name: Upload firmware to release
-        if: env.UPLOAD_RELEASE == 'true' && steps.organize.outputs.status == 'success' && !cancelled()
+        if: env.UPLOAD_RELEASE == 'true' && steps.organize.outputs.status == 'success' && steps.tag.outputs.status == 'success' && !cancelled()
         env:
-         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euxo pipefail
 
@@ -163,10 +175,10 @@ jobs:
           ls -lh "${{ env.FIRMWARE }}"
 
           if gh release view "${{ steps.tag.outputs.release_tag }}" >/dev/null 2>&1; then
-            echo "Release already exists, upload assets to existing release"
+            echo "Release already exists, uploading assets to existing release"
             gh release upload "${{ steps.tag.outputs.release_tag }}" ${{ env.FIRMWARE }}/* --clobber
           else
-            echo "Create new release"
+            echo "Creating new release"
             gh release create "${{ steps.tag.outputs.release_tag }}" \
               ${{ env.FIRMWARE }}/* \
               --notes-file release.txt \
