@@ -144,20 +144,34 @@ jobs:
         id: tag
         if: env.UPLOAD_RELEASE == 'true' && !cancelled()
         run: |
-          echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> "$GITHUB_OUTPUT"
+          tag=$(date +"%Y.%m.%d-%H%M%S")
+          echo "release_tag=$tag" >> "$GITHUB_OUTPUT"
           touch release.txt
           echo "OpenWrt build $(date)" >> release.txt
           echo "status=success" >> "$GITHUB_OUTPUT"
+          echo "Generated release tag: $tag"
 
       - name: Upload firmware to release
-        if: steps.tag.outputs.status == 'success' && !cancelled()
+        if: env.UPLOAD_RELEASE == 'true' && steps.organize.outputs.status == 'success' && !cancelled()
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create "${{ steps.tag.outputs.release_tag }}" \
-            ${{ env.FIRMWARE }}/* \
-            --notes-file release.txt \
-            --title "${{ steps.tag.outputs.release_tag }}"
+          set -euxo pipefail
+
+          echo "Release tag: ${{ steps.tag.outputs.release_tag }}"
+          echo "Firmware dir: ${{ env.FIRMWARE }}"
+          ls -lh "${{ env.FIRMWARE }}"
+
+          if gh release view "${{ steps.tag.outputs.release_tag }}" >/dev/null 2>&1; then
+            echo "Release already exists, upload assets to existing release"
+            gh release upload "${{ steps.tag.outputs.release_tag }}" ${{ env.FIRMWARE }}/* --clobber
+          else
+            echo "Create new release"
+            gh release create "${{ steps.tag.outputs.release_tag }}" \
+              ${{ env.FIRMWARE }}/* \
+              --notes-file release.txt \
+              --title "${{ steps.tag.outputs.release_tag }}"
+          fi
 
       - name: Delete old workflow runs
         if: (!cancelled())
