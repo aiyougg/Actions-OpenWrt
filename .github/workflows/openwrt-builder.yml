@@ -77,7 +77,9 @@ jobs:
           git log -1 --oneline
           echo "===== branch ====="
           git branch --show-current || true
-          echo "===== kernel selector ====="
+          echo "===== kernel 6.18 file ====="
+          grep -n 'LINUX_VERSION-6.18' target/linux/generic/kernel-6.18 || true
+          echo "===== x86 kernel selector ====="
           grep -E 'KERNEL_PATCHVER|KERNEL_TESTING_PATCHVER' target/linux/x86/Makefile || true
 
       - name: Load custom feeds
@@ -108,26 +110,8 @@ jobs:
       - name: Apply util-linux musl fix
         run: |
           set -eux
-
-          if grep -Rqs 'AT_HANDLE_FID' openwrt/package/utils/util-linux/patches 2>/dev/null; then
-            echo "util-linux AT_HANDLE_FID fix already present, skip."
-          else
-            mkdir -p openwrt/package/utils/util-linux/patches
-            cat > openwrt/package/utils/util-linux/patches/100-nsenter-fix-at-handle-fid-on-musl.patch <<'EOF'
---- a/sys-utils/nsenter.c
-+++ b/sys-utils/nsenter.c
-@@ -29,6 +29,9 @@
- #ifdef HAVE_LINUX_NSFS_H
- # include <linux/nsfs.h>
- #endif
-+#ifndef AT_HANDLE_FID
-+# define AT_HANDLE_FID 0x200
-+#endif
- #ifndef NS_GET_USERNS
- # define NS_GET_USERNS _IO(0xb7, 0x1)
- #endif
-EOF
-          fi
+          mkdir -p openwrt/package/utils/util-linux/patches
+          python3 -c "from pathlib import Path; p=Path('openwrt/package/utils/util-linux/patches/100-nsenter-fix-at-handle-fid-on-musl.patch'); txt='--- a/sys-utils/nsenter.c\n+++ b/sys-utils/nsenter.c\n@@ -29,6 +29,9 @@\n #ifdef HAVE_LINUX_NSFS_H\n # include <linux/nsfs.h>\n #endif\n+#ifndef AT_HANDLE_FID\n+# define AT_HANDLE_FID 0x200\n+#endif\n #ifndef NS_GET_USERNS\n # define NS_GET_USERNS _IO(0xb7, 0x1)\n #endif\n'; old=p.read_text(encoding='utf-8', errors='ignore') if p.exists() else ''; print(f'Patch already present: {p}') if 'AT_HANDLE_FID' in old else (p.write_text(txt, encoding='utf-8'), print(f'Wrote patch: {p}'))"
 
       - name: Download package
         run: |
@@ -142,7 +126,6 @@ EOF
         run: |
           cd openwrt
           echo "$(nproc) core(s) detected"
-          set -o pipefail
           make -j$(($(nproc)+1)) || make -j1 V=s 2>&1 | tee build.log
           echo "status=success" >> "$GITHUB_OUTPUT"
 
@@ -157,7 +140,6 @@ EOF
           name: OpenWrt_build_log
           path: openwrt/build.log
           retention-days: 3
-          if-no-files-found: ignore
 
       - name: Check space usage
         if: (!cancelled())
@@ -205,7 +187,6 @@ EOF
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euxo pipefail
-
           echo "Release tag: ${{ steps.tag.outputs.release_tag }}"
           echo "Firmware dir: ${{ env.FIRMWARE }}"
           ls -lh "${{ env.FIRMWARE }}"
