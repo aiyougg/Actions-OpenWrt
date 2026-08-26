@@ -33,6 +33,6 @@ popd
 cd package
 git clone https://github.com/jerrykuku/luci-theme-argon.git
 git clone https://github.com/jerrykuku/luci-app-argon-config.git
-git clone https://github.com/timsaya/luci-app-bandix-plus.git
-git clone https://github.com/timsaya/openwrt-bandix-plus.git
+git clone https://github.com/timsaya/luci-app-bandix.git
+git clone https://github.com/timsaya/openwrt-bandix.git
 cd ..
