@@ -23,16 +23,18 @@ git clone https://github.com/destan19/OpenAppFilter.git package/OpenAppFilter
 #sed -i 's/OpenWrt/P3TERX-Router/g' package/base-files/files/bin/config_generate
 
 #dnsproxy
-git clone --depth 1 --branch master --single-branch --no-checkout https://github.com/muink/luci-app-dnsproxy.git package/luci-app-dnsproxy
-pushd package/luci-app-dnsproxy
-umask 022
-git checkout
-popd
+#git clone --depth 1 --branch master --single-branch --no-checkout https://github.com/muink/luci-app-dnsproxy.git package/luci-app-dnsproxy
+#pushd package/luci-app-dnsproxy
+#umask 022
+#git checkout
+#popd
 
 #bandix|argon
 cd package
-git clone https://github.com/jerrykuku/luci-theme-argon.git
-git clone https://github.com/jerrykuku/luci-app-argon-config.git
+#git clone https://github.com/jerrykuku/luci-theme-argon.git
+#git clone https://github.com/jerrykuku/luci-app-argon-config.git
 git clone https://github.com/timsaya/luci-app-bandix.git
 git clone https://github.com/timsaya/openwrt-bandix.git
+git clone https://github.com/hudra0/qosmate.git
+git clone https://github.com/hudra0/luci-app-qosmate.git package/luci-app-qosmate
 cd ..
