@@ -98,6 +98,13 @@ jobs:
         run: |
           cd openwrt
           ./scripts/feeds install -a
+      
+      - name: Update QoSmate LuCI
+        run: |
+          cp "$GITHUB_WORKSPACE/update-qosmate.sh" openwrt/scripts/update-qosmate.sh
+          chmod +x openwrt/scripts/update-qosmate.sh
+          cd openwrt
+          ./scripts/update-qosmate.sh
 
       - name: Load custom configuration
         run: |
