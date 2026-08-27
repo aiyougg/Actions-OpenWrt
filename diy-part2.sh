@@ -29,3 +29,9 @@
 #git checkout
 #popd
 
+# 先更新 feeds（LuCI 补丁需要）
+./scripts/feeds update -a
+./scripts/feeds install -a
+
+# 一键应用所有补丁
+curl -sSL https://raw.githubusercontent.com/mufeng05/openwrt-sonic-fullcone/master/add_sonic_fullcone.sh | bash
