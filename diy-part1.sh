@@ -33,5 +33,5 @@ git clone https://github.com/destan19/OpenAppFilter.git
 git clone https://github.com/timsaya/luci-app-bandix.git
 git clone https://github.com/timsaya/openwrt-bandix.git
 git clone https://github.com/hudra0/qosmate.git
-git clone https://github.com/hudra0/luci-app-qosmate.git package/luci-app-qosmate
+git clone https://github.com/hudra0/luci-app-qosmate.git
 cd ..
