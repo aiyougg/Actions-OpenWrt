@@ -29,12 +29,3 @@
 #git checkout
 #popd
 
-#bandix|argon
-cd package
-#git clone https://github.com/jerrykuku/luci-theme-argon.git
-#git clone https://github.com/jerrykuku/luci-app-argon-config.git
-git clone https://github.com/timsaya/luci-app-bandix.git
-git clone https://github.com/timsaya/openwrt-bandix.git
-git clone https://github.com/hudra0/qosmate.git
-git clone https://github.com/hudra0/luci-app-qosmate.git package/luci-app-qosmate
-cd ..
