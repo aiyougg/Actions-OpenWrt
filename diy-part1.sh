@@ -27,6 +27,7 @@
 #bandix|argon
 #oaf
 cd package
+git clone https://github.com/destan19/OpenAppFilter.git
 git clone https://github.com/jerrykuku/luci-theme-argon.git
 git clone https://github.com/jerrykuku/luci-app-argon-config.git
 git clone https://github.com/destan19/OpenAppFilter.git
