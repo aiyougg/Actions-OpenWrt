@@ -12,4 +12,4 @@ src-git taskplan  https://github.com/sirpdboy/luci-app-ddns-go
 #src-git routing https://github.com/openwrt/routing.git
 #src-git telephony https://github.com/openwrt/telephony.git
 #src-git video https://github.com/openwrt/video.git
-#src-git lienol https://github.com/Lienol/openwrt-package.git
+src-git lienol https://github.com/Lienol/openwrt-package.git
