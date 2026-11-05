@@ -34,4 +34,5 @@ git clone https://github.com/timsaya/luci-app-bandix.git
 git clone https://github.com/timsaya/openwrt-bandix.git
 git clone https://github.com/hudra0/qosmate.git
 git clone https://github.com/hudra0/luci-app-qosmate.git
+git clone https://github.com/adminchenyu/LAN-Scanner.git
 cd ..
