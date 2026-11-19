@@ -27,6 +27,7 @@
 #bandix|argon
 #oaf
 cd package
+git clone https://github.com/mrjoechen/luci-theme-carbon.git luci-theme-carbon
 git clone https://github.com/destan19/OpenAppFilter.git
 #git clone https://github.com/jerrykuku/luci-theme-argon.git
 #git clone https://github.com/jerrykuku/luci-app-argon-config.git
@@ -36,3 +37,4 @@ git clone https://github.com/hudra0/qosmate.git
 git clone https://github.com/hudra0/luci-app-qosmate.git
 git clone https://github.com/adminchenyu/LAN-Scanner.git
 cd ..
+git clone https://github.com/shb110119/luci-app-traffic package/luci-app-traffic
