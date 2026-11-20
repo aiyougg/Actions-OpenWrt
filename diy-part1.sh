@@ -30,7 +30,8 @@ pushd package/luci-app-dnsproxy
 umask 022
 git checkout
 popd
-
+#luci-app-parentcontrol
+git clone https://github.com/sirpdboy/luci-app-parentcontrol.git \package/luci-app-parentcontrol
 #bandix|argon
 #oaf
 cd package
