@@ -24,6 +24,13 @@
 #git checkout
 #popd
 
+#dnsproxy
+git clone --depth 1 --branch master --single-branch --no-checkout https://github.com/muink/luci-app-dnsproxy.git package/luci-app-dnsproxy
+pushd package/luci-app-dnsproxy
+umask 022
+git checkout
+popd
+
 #bandix|argon
 #oaf
 cd package
@@ -37,4 +44,3 @@ git clone https://github.com/hudra0/qosmate.git
 git clone https://github.com/hudra0/luci-app-qosmate.git
 git clone https://github.com/adminchenyu/LAN-Scanner.git
 cd ..
-git clone https://github.com/shb110119/luci-app-traffic package/luci-app-traffic
