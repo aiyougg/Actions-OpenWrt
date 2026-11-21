@@ -34,7 +34,7 @@ popd
 #fwlive
 git clone https://github.com/lucas-albers-lz4/fwlive.git package/fwlive
 #luci-app-parentcontrol
-git clone https://github.com/sirpdboy/luci-app-parentcontrol.git \package/luci-app-parentcontrol
+#git clone https://github.com/sirpdboy/luci-app-parentcontrol.git \package/luci-app-parentcontrol
 #bandix|argon
 #oaf
 cd package
