@@ -25,11 +25,11 @@
 #popd
 
 #dnsproxy
-git clone --depth 1 --branch master --single-branch --no-checkout https://github.com/muink/luci-app-dnsproxy.git package/luci-app-dnsproxy
-pushd package/luci-app-dnsproxy
-umask 022
-git checkout
-popd
+#git clone --depth 1 --branch master --single-branch --no-checkout https://github.com/muink/luci-app-dnsproxy.git package/luci-app-dnsproxy
+#pushd package/luci-app-dnsproxy
+#umask 022
+#git checkout
+#popd
 
 #fwlive
 git clone https://github.com/lucas-albers-lz4/fwlive.git package/fwlive
